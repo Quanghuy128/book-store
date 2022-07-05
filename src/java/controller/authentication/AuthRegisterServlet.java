@@ -5,6 +5,7 @@
  */
 package controller.authentication;
 
+import account.EncryptedPassword;
 import account.AccountDAO;
 import account.InvalidAccountError;
 import java.io.IOException;
@@ -48,6 +49,8 @@ public class AuthRegisterServlet extends HttpServlet {
         String phone_no = request.getParameter("txtPhoneNumber");
         String sex = request.getParameter("txtSex");
         
+        boolean checkSuccess = false;
+        
         InvalidAccountError errors = new InvalidAccountError();
         boolean foundErr = false;
         try {
@@ -83,8 +86,11 @@ public class AuthRegisterServlet extends HttpServlet {
                 request.setAttribute("ERROR", errors);
             } else {
                 AccountDAO dao = new AccountDAO();
+                //encrypt password to MD5
+                password = EncryptedPassword.toHexString(EncryptedPassword.getSHA(password));
                 boolean result = dao.createAccount(username, password, fullname, address, phone_no, sex);
                 if (result) {
+                    checkSuccess = true;
                     url = sitemap.get("login_page");
                 }
             }
@@ -100,8 +106,12 @@ public class AuthRegisterServlet extends HttpServlet {
             log("AuthRegisterServlet _ Naming _ " + ex.getMessage());
             
         }finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            if(checkSuccess) {
+                response.sendRedirect(url);
+            }else{
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            }
         }
     }
 

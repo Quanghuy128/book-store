@@ -7,6 +7,7 @@ package controller.authentication;
 
 import account.AccountDAO;
 import account.AccountDTO;
+import account.EncryptedPassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -44,6 +45,8 @@ public class AuthLoginServlet extends HttpServlet {
         String password = request.getParameter("login_password");
         boolean errorFound = false;
         try {
+            //encrypt password to MD5
+            password = EncryptedPassword.toHexString(EncryptedPassword.getSHA(password));
             //1.call DAO
             AccountDAO dao = new AccountDAO();
             AccountDTO result = dao.getUser(username, password);
