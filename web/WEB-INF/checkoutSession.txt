@@ -1,0 +1,4 @@
+checkoutViewAction
+checkoutAction
+checkout_page
+checkout.jsp

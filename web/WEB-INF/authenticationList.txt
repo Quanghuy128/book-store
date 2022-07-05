@@ -1,0 +1,6 @@
+searchAction
+search_page
+deleteAccountAction
+updateAccountAction
+logoutAction
+search.jsp
