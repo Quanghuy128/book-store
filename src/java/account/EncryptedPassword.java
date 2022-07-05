@@ -1,10 +1,17 @@
 package account;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import sun.misc.BASE64Decoder;
 
 public class EncryptedPassword implements Serializable{ 
 
@@ -25,4 +32,5 @@ public class EncryptedPassword implements Serializable{
         }
         return hexString.toString();
     }
+    
 }

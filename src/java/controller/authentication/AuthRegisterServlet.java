@@ -7,7 +7,7 @@ package controller.authentication;
 
 import account.EncryptedPassword;
 import account.AccountDAO;
-import account.InvalidAccountError;
+import account.InvalidAccountHandling;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -51,7 +51,7 @@ public class AuthRegisterServlet extends HttpServlet {
         
         boolean checkSuccess = false;
         
-        InvalidAccountError errors = new InvalidAccountError();
+        InvalidAccountHandling errors = new InvalidAccountHandling();
         boolean foundErr = false;
         try {
             if (username.trim().length() <= 0) {

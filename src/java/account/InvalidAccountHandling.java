@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author huy
  */
-public class InvalidAccountError implements Serializable{
+public class InvalidAccountHandling implements Serializable{
     private String usernameLengthError;
     private String passwordLenghtError;
     private String confirmNotMatched;
@@ -21,7 +21,7 @@ public class InvalidAccountError implements Serializable{
     private String phoneNumberLengthError;
     private String sexLengthError;
 
-    public InvalidAccountError() {
+    public InvalidAccountHandling() {
     }
     
     

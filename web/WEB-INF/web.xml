@@ -30,11 +30,23 @@
     </servlet>
     <servlet>
         <servlet-name>AccountSearchServlet</servlet-name>
-        <servlet-class>controller.authentication.AccountSearchServlet</servlet-class>
+        <servlet-class>controller.account.AccountSearchServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AuthRegisterServlet</servlet-name>
         <servlet-class>controller.authentication.AuthRegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountUpdateServlet</servlet-name>
+        <servlet-class>controller.account.AccountUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountDeleteServlet</servlet-name>
+        <servlet-class>controller.account.AccountDeleteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AuthLogoutServlet</servlet-name>
+        <servlet-class>controller.account.AuthLogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthStartupServlet</servlet-name>
@@ -51,6 +63,18 @@
     <servlet-mapping>
         <servlet-name>AuthRegisterServlet</servlet-name>
         <url-pattern>/AuthRegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountUpdateServlet</servlet-name>
+        <url-pattern>/AccountUpdateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountDeleteServlet</servlet-name>
+        <url-pattern>/AccountDeleteServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthLogoutServlet</servlet-name>
+        <url-pattern>/AuthLogoutServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

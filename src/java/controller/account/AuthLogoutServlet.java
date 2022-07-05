@@ -3,28 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.authentication;
+package controller.account;
 
-import account.AccountDAO;
-import account.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class AccountSearchServlet extends HttpServlet {
-    Map<String,String> sitemap;
+public class AuthLogoutServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,27 +32,21 @@ public class AccountSearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        sitemap = (Map<String,String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("search_page");
-        String searchValue = request.getParameter("search_value");
-        
+        String url = "login_page";
         try {
-            if(searchValue!=null && searchValue.trim().length() > 0) {
-                //1.call dao
-                AccountDAO dao = new AccountDAO();
-                dao.searchAccounts(searchValue);
-                //2.process result
-                List<AccountDTO> result = dao.getAccounts();
-                request.setAttribute("SEARCH_RESULT", result);
-            }
-        }catch(SQLException ex) {
-            log("AccountSearchServlet _ SQL _ " + ex.getMessage());
-        }catch(NamingException ex) {
-            log("AccountSearchServlet _ Naming _ " + ex.getMessage());
-        }finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                Cookie[] cookies = request.getCookies();
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
+                    }//end for cookies
+                }//end if cookies is not null
+                session.invalidate();
+            }//end if session is not null
+        } finally {
+            response.sendRedirect(url);
         }
     }
 
