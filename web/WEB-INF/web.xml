@@ -4,7 +4,7 @@
         <filter-name>DispatchFilter</filter-name>
         <filter-class>filter.DispatchFilter</filter-class>
     </filter>
-<!--    <filter>
+    <!--    <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filter.AuthenticationFilter</filter-class>
     </filter>
@@ -32,6 +32,10 @@
         <servlet-name>AccountSearchServlet</servlet-name>
         <servlet-class>controller.authentication.AccountSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AuthRegisterServlet</servlet-name>
+        <servlet-class>controller.authentication.AuthRegisterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthStartupServlet</servlet-name>
         <url-pattern>/AuthStartupServlet</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>AccountSearchServlet</servlet-name>
         <url-pattern>/AccountSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthRegisterServlet</servlet-name>
+        <url-pattern>/AuthRegisterServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -24,5 +24,6 @@
             <br/>
             <input type="submit" value="Login" name="btAction" />
         </form>
+        <a href="register_page">SignUp</a>
     </body>
 </html>

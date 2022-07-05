@@ -161,4 +161,43 @@ public class AccountDAO implements Serializable{
             }
         }
     }
+    
+    public boolean createAccount(String username, String password,String fullname,
+                                String address, String phone_no, String sex) 
+            throws NamingException, SQLException {
+        Connection connection = null;
+        PreparedStatement stmt = null;
+        boolean result = false;
+        try {
+            //1.make Connection
+            connection = DBHelper.makeConnection();
+            if(connection!=null) {
+                //2.write sql string
+                String sql = "Insert Into Account(username, password, fullname, address, phone_no, sex) "
+                            +"Values(?,?,?,?,?,?) ";
+                //3.create statement
+                stmt = connection.prepareStatement(sql);
+                stmt.setString(1, username);
+                stmt.setString(2, password);
+                stmt.setString(3, fullname);
+                stmt.setString(4, address);
+                stmt.setString(5, phone_no);
+                stmt.setString(6, sex);
+                //4.execute query
+                int  affectedRows = stmt.executeUpdate();
+                //5.process
+                if(affectedRows > 0) {
+                    result = true;
+                }
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return result;
+    }
 }
