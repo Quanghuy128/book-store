@@ -3,29 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.cart;
+package controller.checkout;
 
 import cart.CartObject;
-import checkout.order_detail.OrderedDetailDAO;
-import checkout.ordered.OrderedDAO;
 import dao.product.ProductDAO;
 import dao.product.ProductDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class DeleteCartItemsServlet extends HttpServlet {
+public class CheckOutViewServlet extends HttpServlet {
     Map<String, String> sitemap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,26 +39,35 @@ public class DeleteCartItemsServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         sitemap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("CartViewAction");
-        String[] selectedItems = request.getParameterValues("chkItem");
-        
+        String url = sitemap.get("checkout");
+        Map<ProductDTO,Integer> map = new HashMap<>();
         try {
-            HttpSession session = request.getSession(false);
-                if (session != null) {
-                    //2.Take customer's cart
-                    CartObject cart = (CartObject) session.getAttribute("CART");
-                    if (cart != null) {
-                        Map<String, Integer> items = cart.getItems();
-                        if (items != null) {
-                            //3.Create order
-                                for (String key : selectedItems) {
-                                    items.remove(key);
-                                }
-                                session.setAttribute("CART", cart);
-                        }//end if items is not null
-                    }//end if cart is not null
-            }//end if session is not null
-        }finally{
+            ProductDTO dto = null;
+            //get product
+            ProductDAO dao = new ProductDAO();
+            //get cart obj
+            CartObject cart = (CartObject)request.getSession().getAttribute("CART");
+            
+            double total = 0;
+            if(cart != null) {
+                Map<String,Integer> items = (Map<String,Integer>)cart.getItems();
+                if(items!=null) {
+                    for (String key : items.keySet()) {
+                        dto = dao.getItem(key);
+                        if(dto != null) {
+                            map.put(dto, items.get(key));
+                            total += (dto.getPrice() * items.get(key));
+                        }
+                    }   
+                }
+            }
+            request.setAttribute("ITEMS_IN_CHECKOUT", map);
+            request.setAttribute("TOTAL_PRICE", total);
+        }catch(SQLException ex){
+            log("CheckOutViewServlet _ SQL _ " + ex.getMessage());
+        }catch(NamingException ex){
+            log("CheckOutViewServlet _ Naming _ " + ex.getMessage());
+        }finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

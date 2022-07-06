@@ -12,6 +12,6 @@ Buy Book Online Project uses MVC2 Design Pattern
 		-view cart
 		-delete item in cart
 		-checkout
-***Library we use: 	- jstl (java standard tag library)
+***Library we use: 	- jstl (JavaServer standard tag library)
 				- jdbc (connect db)
 				- log4j(if any)
