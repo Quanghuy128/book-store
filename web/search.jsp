@@ -14,7 +14,7 @@
     </head>
     <body>
         <div>
-            <font color="red">Welcome</font> ${sessionScope.USER.fullname}
+            <font color="red">Welcome</font> ${sessionScope.USER.fullname} ${sessionScope.TEST}
             <form action="logoutAction">
                 <input type="submit" value="Logout" />
             </form>

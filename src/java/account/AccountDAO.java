@@ -212,15 +212,27 @@ public class AccountDAO implements Serializable{
             //1.make Connection
             connection = DBHelper.makeConnection();
             if(connection!=null) {
-                //2.write sql string
-                String sql = "Update Account "
+                String sql;
+                System.out.println(password + " test");
+                if(password.equals("d41d8cd98f00b204e9800998ecf8427e")){ // "" in md5
+                    sql = "Update Account "
+                        +"Set role = ? "
+                        +"Where username = ?";
+                    stmt = connection.prepareStatement(sql);
+                    stmt.setString(1, role);
+                    stmt.setString(2, username);
+                }else {
+                    //2.write sql string
+                    sql = "Update Account "
                             +"Set password = ?, role = ? "
                             +"Where username = ?";
-                //3.create statement
-                stmt = connection.prepareStatement(sql);
-                stmt.setString(1, password);
-                stmt.setString(2, role);
-                stmt.setString(3, username);
+                    //3.create statement
+                    stmt = connection.prepareStatement(sql);
+                    stmt.setString(1, password);
+                    stmt.setString(2, role);
+                    stmt.setString(3, username);
+                }
+                
                 //4.execute query
                 int  affectedRows = stmt.executeUpdate();
                 //5.process

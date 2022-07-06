@@ -45,7 +45,6 @@ public class AccountUpdateServlet extends HttpServlet {
         String searchValue = request.getParameter("lastSearchValue");
         //url
         String url = sitemap.get("searchAction") + "?search_value=" + searchValue;
-        
         InvalidAccountHandling errors = new InvalidAccountHandling();
         try {
             AccountDAO dao = new AccountDAO();
