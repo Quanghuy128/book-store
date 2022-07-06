@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.account;
+package controller.cart;
 
-import dao.account.AccountDAO;
-import dao.account.AccountDTO;
+import cart.CartObject;
+import dao.product.ProductDAO;
+import dao.product.ProductDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -18,14 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class AccountSearchServlet extends HttpServlet {
-    Map<String,String> sitemap;
+public class ViewCartServlet extends HttpServlet {
+    Map<String, String> sitemap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,24 +37,32 @@ public class AccountSearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        sitemap = (Map<String,String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("search");
-        String searchValue = request.getParameter("search_value");
-        
+        sitemap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
+        String url = sitemap.get("cart");
+        Map<ProductDTO,Integer> map = new HashMap<>();
         try {
-            if(searchValue!=null && searchValue.trim().length() > 0) {
-                //1.call dao
-                AccountDAO dao = new AccountDAO();
-                dao.searchAccounts(searchValue);
-                //2.process result
-                List<AccountDTO> result = dao.getAccounts();
-                request.setAttribute("SEARCH_RESULT", result);
+            ProductDTO dto = null;
+            //get product
+            ProductDAO dao = new ProductDAO();
+            //get cart obj
+            CartObject cart = (CartObject)request.getSession().getAttribute("CART");
+            
+            if(cart != null) {
+                Map<String,Integer> items = (Map<String,Integer>)cart.getItems();
+                if(items!=null) {
+                    for (String key : items.keySet()) {
+                        dto = dao.getItem(key);
+                        if(dto != null) {
+                            map.put(dto, items.get(key));
+                        }
+                    }   
+                }
             }
-        }catch(SQLException ex) {
-            log("AccountSearchServlet _ SQL _ " + ex.getMessage());
-        }catch(NamingException ex) {
-            log("AccountSearchServlet _ Naming _ " + ex.getMessage());
+            request.setAttribute("ITEMS_IN_CART", map);
+        }catch(SQLException ex){
+            log("ViewCartServlet _ SQL _ " + ex.getMessage());
+        }catch(NamingException ex){
+            log("ViewCartServlet _ Naming _ " + ex.getMessage());
         }finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.account;
+package controller.product;
 
-import dao.account.AccountDAO;
-import dao.account.AccountDTO;
+import dao.product.ProductDAO;
+import dao.product.ProductDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,14 +18,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class AccountSearchServlet extends HttpServlet {
-    Map<String,String> sitemap;
+public class StoreViewServlet extends HttpServlet {
+
+    Map<String, String> sitemap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,25 +38,18 @@ public class AccountSearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        sitemap = (Map<String,String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("search");
-        String searchValue = request.getParameter("search_value");
-        
+        sitemap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
+        String url = sitemap.get("shopping");
         try {
-            if(searchValue!=null && searchValue.trim().length() > 0) {
-                //1.call dao
-                AccountDAO dao = new AccountDAO();
-                dao.searchAccounts(searchValue);
-                //2.process result
-                List<AccountDTO> result = dao.getAccounts();
-                request.setAttribute("SEARCH_RESULT", result);
-            }
-        }catch(SQLException ex) {
-            log("AccountSearchServlet _ SQL _ " + ex.getMessage());
-        }catch(NamingException ex) {
-            log("AccountSearchServlet _ Naming _ " + ex.getMessage());
-        }finally {
+            ProductDAO dao = new ProductDAO();
+            dao.getProducts();
+            List<ProductDTO> list_items = dao.getItems();
+            request.setAttribute("ITEMS", list_items);
+        }catch(SQLException ex){
+            log("StoreViewServlet _ SQL _ " + ex.getMessage());
+        }catch(NamingException ex){
+            log("StoreViewServlet _ Naming _ " + ex.getMessage());
+        }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

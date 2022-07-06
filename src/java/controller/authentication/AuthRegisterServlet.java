@@ -39,7 +39,7 @@ public class AuthRegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         sitemap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("register_page");
+        String url = sitemap.get("register");
         
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
@@ -91,7 +91,7 @@ public class AuthRegisterServlet extends HttpServlet {
                 boolean result = dao.createAccount(username, password, fullname, address, phone_no, sex);
                 if (result) {
                     checkSuccess = true;
-                    url = sitemap.get("login_page");
+                    url = sitemap.get("login");
                 }
             }
            

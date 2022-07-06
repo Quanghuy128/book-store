@@ -15,7 +15,7 @@
     <body>
         <h1>Login Page</h1>
         <h6 style="color: red">${requestScope.INVALID_MSG}</h6>
-        <form action="loginAction" method="POST">
+        <form action="LoginAction" method="POST">
             <label for="user_username">Username</label>
             <input type="text" id="user_username" name="login_username" value="" />
             <br/>
@@ -24,6 +24,7 @@
             <br/>
             <input type="submit" value="Login" name="btAction" />
         </form>
-        <a href="register_page">SignUp</a>
+        <a href="register">Sign Up</a>
+        <a href="StoreViewAction">Shopping</a>
     </body>
 </html>

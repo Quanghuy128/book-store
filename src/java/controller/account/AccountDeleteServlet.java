@@ -40,7 +40,7 @@ public class AccountDeleteServlet extends HttpServlet {
         String username = request.getParameter("username");
         String searchValue = request.getParameter("lastSearchValue");
         
-        String url = sitemap.get("searchAction") + "?search_value=" + searchValue;
+        String url = sitemap.get("SearchAction") + "?search_value=" + searchValue;
         
         try {
             AccountDAO dao = new AccountDAO();

@@ -48,6 +48,22 @@
         <servlet-name>AuthLogoutServlet</servlet-name>
         <servlet-class>controller.account.AuthLogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StoreViewServlet</servlet-name>
+        <servlet-class>controller.product.StoreViewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCartItemsServlet</servlet-name>
+        <servlet-class>controller.cart.AddCartItemsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCartServlet</servlet-name>
+        <servlet-class>controller.cart.ViewCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCartItemsServlet</servlet-name>
+        <servlet-class>controller.cart.DeleteCartItemsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthStartupServlet</servlet-name>
         <url-pattern>/AuthStartupServlet</url-pattern>
@@ -75,6 +91,22 @@
     <servlet-mapping>
         <servlet-name>AuthLogoutServlet</servlet-name>
         <url-pattern>/AuthLogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StoreViewServlet</servlet-name>
+        <url-pattern>/StoreViewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCartItemsServlet</servlet-name>
+        <url-pattern>/AddCartItemsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCartServlet</servlet-name>
+        <url-pattern>/ViewCartServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCartItemsServlet</servlet-name>
+        <url-pattern>/DeleteCartItemsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
