@@ -64,6 +64,14 @@
         <servlet-name>DeleteCartItemsServlet</servlet-name>
         <servlet-class>controller.cart.DeleteCartItemsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckOutViewServlet</servlet-name>
+        <servlet-class>controller.checkout.CheckOutViewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>controller.checkout.CheckoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthStartupServlet</servlet-name>
         <url-pattern>/AuthStartupServlet</url-pattern>
@@ -107,6 +115,14 @@
     <servlet-mapping>
         <servlet-name>DeleteCartItemsServlet</servlet-name>
         <url-pattern>/DeleteCartItemsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckOutViewServlet</servlet-name>
+        <url-pattern>/CheckOutViewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/CheckoutServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

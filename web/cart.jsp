@@ -74,7 +74,8 @@
 
         </c:if>
         <c:if test="${empty cart_items}">
-            <font color="red">No Item In Cart</font>
+            <h1 style="color: red">No Item In Cart!!!</h1>
+            <a href="StoreViewAction">Back To Store</a>
         </c:if>
     </body>
 </html>
