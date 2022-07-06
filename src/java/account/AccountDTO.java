@@ -30,6 +30,12 @@ public class AccountDTO implements Serializable{
         this.sex = sex;
     }
 
+    public AccountDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+
     /**
      * @return the username
      */

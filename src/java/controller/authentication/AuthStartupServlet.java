@@ -8,6 +8,7 @@ package controller.authentication;
 import account.AccountDAO;
 import account.AccountDTO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -35,31 +36,32 @@ public class AuthStartupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "login_page";
+        String url = "login_page";  
         try {
             Cookie[] cookies = request.getCookies();
             if(cookies!=null) {
-                    //read information
-                    String username = null;
-                    String password = null;
-                    for (int i=cookies.length-1; i >= 0;i--) {
-                        if(!cookies[i].getName().equals("JESSIONID")) {
-                            username = cookies[i].getName();    
-                            password = cookies[i].getValue();
-                        }
+                //read information
+                String username = null;
+                String password = null;
+                for (int i=cookies.length-1; i >= 0;i--) {
+                    if(!cookies[i].getName().equals("JSESSIONID")) {
+                        username = cookies[i].getName();    
+                        password = cookies[i].getValue();
                     }
-                    //call Dao
-                    AccountDAO dao = new AccountDAO();
-                    AccountDTO result = dao.getUser(username, password);
-                    if(result!=null) {
-                        if(result.getRole().equalsIgnoreCase("Admin")){
-                            url = "search_page";
-                        }else{
-                            url = "shopping_page";
-                        }
-                    }else {
+                }
+                
+                //call Dao
+                AccountDAO dao = new AccountDAO();
+                AccountDTO result = dao.getUser(username, password);
+
+                if(result!=null) {
+                    if(result.getRole().equalsIgnoreCase("Admin")){
                         url = "search_page";
+                    }else{
+                        url = "shopping_page";
                     }
+                    request.getSession(true).setAttribute("USER", result);
+                }
             }//end cookies has existed
         } catch (SQLException ex) {
             log("AuthStartupController _ SQL _" + ex.getMessage());

@@ -6,7 +6,6 @@
 package controller.account;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -34,17 +33,20 @@ public class AuthLogoutServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = "login_page";
         try {
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                Cookie[] cookies = request.getCookies();
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (!cookie.getName().equals("JSESSIONID")) {
+                        cookie.setValue(null);
                         cookie.setMaxAge(0);
                         response.addCookie(cookie);
-                    }//end for cookies
-                }//end if cookies is not null
+                    }
+                }
+            }
+            HttpSession session = request.getSession(false);
+            if(session != null) {
                 session.invalidate();
-            }//end if session is not null
+            }
         } finally {
             response.sendRedirect(url);
         }
