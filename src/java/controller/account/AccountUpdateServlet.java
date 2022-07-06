@@ -5,9 +5,9 @@
  */
 package controller.account;
 
-import account.AccountDAO;
-import account.EncryptedPassword;
-import account.InvalidAccountHandling;
+import dao.account.AccountDAO;
+import dao.account.EncryptedPassword;
+import dao.account.InvalidAccountHandling;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
@@ -45,7 +45,6 @@ public class AccountUpdateServlet extends HttpServlet {
         String searchValue = request.getParameter("lastSearchValue");
         //url
         String url = sitemap.get("searchAction") + "?search_value=" + searchValue;
-        InvalidAccountHandling errors = new InvalidAccountHandling();
         try {
             AccountDAO dao = new AccountDAO();
             //encrypt password

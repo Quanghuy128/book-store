@@ -5,7 +5,7 @@
  */
 package controller.account;
 
-import account.AccountDAO;
+import dao.account.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
