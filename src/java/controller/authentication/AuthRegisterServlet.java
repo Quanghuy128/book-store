@@ -5,9 +5,9 @@
  */
 package controller.authentication;
 
-import account.EncryptedPassword;
-import account.AccountDAO;
-import account.InvalidAccountHandling;
+import dao.account.EncryptedPassword;
+import dao.account.AccountDAO;
+import dao.account.InvalidAccountHandling;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;

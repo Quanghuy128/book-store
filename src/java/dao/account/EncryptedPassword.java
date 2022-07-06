@@ -1,4 +1,4 @@
-package account;
+package dao.account;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -5,8 +5,8 @@
  */
 package controller.authentication;
 
-import account.AccountDAO;
-import account.AccountDTO;
+import dao.account.AccountDAO;
+import dao.account.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
