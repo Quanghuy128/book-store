@@ -3,14 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.authentication;
+package controller.account;
 
-import account.AccountDAO;
-import account.AccountDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author huy
  */
-public class AuthStartupServlet extends HttpServlet {
+public class AuthLogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,37 +31,22 @@ public class AuthStartupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "login_page";  
+        String url = "login_page";
         try {
             Cookie[] cookies = request.getCookies();
-            if(cookies!=null) {
-                //read information
-                String username = null;
-                String password = null;
-                for (int i=cookies.length-1; i >= 0;i--) {
-                    if(!cookies[i].getName().equals("JSESSIONID")) {
-                        username = cookies[i].getName();    
-                        password = cookies[i].getValue();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (!cookie.getName().equals("JSESSIONID")) {
+                        cookie.setValue(null);
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
                     }
                 }
-                
-                //call Dao
-                AccountDAO dao = new AccountDAO();
-                AccountDTO result = dao.getUser(username, password);
-
-                if(result!=null) {
-                    if(result.getRole().equalsIgnoreCase("Admin")){
-                        url = "search_page";
-                    }else{
-                        url = "shopping_page";
-                    }
-                    request.getSession(true).setAttribute("USER", result);
-                }
-            }//end cookies has existed
-        } catch (SQLException ex) {
-            log("AuthStartupController _ SQL _" + ex.getMessage());
-        } catch (NamingException ex) {
-            log("AuthStartupController _ Naming _" + ex.getMessage());
+            }
+            HttpSession session = request.getSession(false);
+            if(session != null) {
+                session.invalidate();
+            }
         } finally {
             response.sendRedirect(url);
         }

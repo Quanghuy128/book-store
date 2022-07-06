@@ -3,27 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.authentication;
+package controller.account;
 
 import account.AccountDAO;
-import account.AccountDTO;
+import account.EncryptedPassword;
+import account.InvalidAccountHandling;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Map;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class AuthStartupServlet extends HttpServlet {
-
+public class AccountUpdateServlet extends HttpServlet {
+    Map<String, String> sitemap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,39 +36,33 @@ public class AuthStartupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "login_page";  
+        sitemap = (Map< String, String>) request.getServletContext().getAttribute("SITE_MAP");
+        
+        //parameter
+        String username = request.getParameter("username");
+        String new_password = request.getParameter("new_password");
+        String role = request.getParameter("role");
+        String searchValue = request.getParameter("lastSearchValue");
+        //url
+        String url = sitemap.get("searchAction") + "?search_value=" + searchValue;
+        InvalidAccountHandling errors = new InvalidAccountHandling();
         try {
-            Cookie[] cookies = request.getCookies();
-            if(cookies!=null) {
-                //read information
-                String username = null;
-                String password = null;
-                for (int i=cookies.length-1; i >= 0;i--) {
-                    if(!cookies[i].getName().equals("JSESSIONID")) {
-                        username = cookies[i].getName();    
-                        password = cookies[i].getValue();
-                    }
-                }
-                
-                //call Dao
-                AccountDAO dao = new AccountDAO();
-                AccountDTO result = dao.getUser(username, password);
-
-                if(result!=null) {
-                    if(result.getRole().equalsIgnoreCase("Admin")){
-                        url = "search_page";
-                    }else{
-                        url = "shopping_page";
-                    }
-                    request.getSession(true).setAttribute("USER", result);
-                }
-            }//end cookies has existed
-        } catch (SQLException ex) {
-            log("AuthStartupController _ SQL _" + ex.getMessage());
-        } catch (NamingException ex) {
-            log("AuthStartupController _ Naming _" + ex.getMessage());
-        } finally {
-            response.sendRedirect(url);
+            AccountDAO dao = new AccountDAO();
+            //encrypt password
+            new_password = EncryptedPassword.toHexString(EncryptedPassword.getSHA(new_password));
+            boolean result = dao.updateAccount(username, new_password, role);
+            if (!result) {
+                request.setAttribute("UPDATE_USER_INVALID", username);
+            }else {
+                request.setAttribute("UPDATE_USER_SUCCESS", username);
+            }
+        }catch(SQLException ex){
+            log("AccountUpdateServlet _ SQL _ " + ex.getMessage());
+        }catch(NamingException ex){
+            log("AccountUpdateServlet _ Naming _ " + ex.getMessage());
+        }finally {
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

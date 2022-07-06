@@ -7,23 +7,25 @@ package controller.authentication;
 
 import account.AccountDAO;
 import account.AccountDTO;
+import account.EncryptedPassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Map;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class AuthStartupServlet extends HttpServlet {
-
+public class AuthLoginServlet extends HttpServlet {
+     Map<String, String> siteMap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,39 +38,44 @@ public class AuthStartupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "login_page";  
+        siteMap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
+        
+        String url = siteMap.get("login_page");
+        String username = request.getParameter("login_username");
+        String password = request.getParameter("login_password");
+        boolean errorFound = false;
         try {
-            Cookie[] cookies = request.getCookies();
-            if(cookies!=null) {
-                //read information
-                String username = null;
-                String password = null;
-                for (int i=cookies.length-1; i >= 0;i--) {
-                    if(!cookies[i].getName().equals("JSESSIONID")) {
-                        username = cookies[i].getName();    
-                        password = cookies[i].getValue();
-                    }
-                }
+            //encrypt password to MD5
+            password = EncryptedPassword.toHexString(EncryptedPassword.getSHA(password));
+            //1.call DAO
+            AccountDAO dao = new AccountDAO();
+            AccountDTO result = dao.getUser(username, password);
+            //2.process
+            if(result != null) {
+                url = siteMap.get("search_page");
                 
-                //call Dao
-                AccountDAO dao = new AccountDAO();
-                AccountDTO result = dao.getUser(username, password);
-
-                if(result!=null) {
-                    if(result.getRole().equalsIgnoreCase("Admin")){
-                        url = "search_page";
-                    }else{
-                        url = "shopping_page";
-                    }
-                    request.getSession(true).setAttribute("USER", result);
-                }
-            }//end cookies has existed
-        } catch (SQLException ex) {
-            log("AuthStartupController _ SQL _" + ex.getMessage());
-        } catch (NamingException ex) {
-            log("AuthStartupController _ Naming _" + ex.getMessage());
-        } finally {
-            response.sendRedirect(url);
+                // cookie
+                Cookie cookie = new Cookie(username, password);
+                cookie.setMaxAge(60 * 3);
+                response.addCookie(cookie);
+                
+                // session
+                request.getSession().setAttribute("USER", result);
+            }else {
+                request.setAttribute("INVALID_MSG", "Invalid username or password!!!");
+                errorFound = true;
+            }
+        }catch (SQLException ex) {
+            log("AuthLoginServlet _ SQL _ " + ex.getMessage());
+        }catch (NamingException ex) {
+            log("AuthLoginServlet _ Naming _ " + ex.getMessage());
+        }finally {
+            if(errorFound){
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            }else {
+                response.sendRedirect(url);
+            }
         }
     }
 
