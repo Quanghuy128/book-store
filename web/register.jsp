@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Create Account</h1>
-        <form action="registerAction" method="POST">
+        <form action="RegisterAction" method="POST">
             <c:set var="errors" value="${requestScope.ERROR}"/>
             Username* <input type="text" name="txtUsername" value="${param.txtUsername}" />(e.g) 6-20 char <br/>
             <c:if test="${not empty errors.usernameLengthError}">
@@ -58,7 +58,7 @@
                 <option>Others</option>
             </select>
             <br/>
-            <input type="submit" value="Create New Account" name="btAction" />
+            <input type="submit" value="Create New Account" />
             <input type="reset" value="Reset"/>
         </form>
     </body>

@@ -3,29 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.account;
+package controller.cart;
 
-import dao.account.AccountDAO;
-import dao.account.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author huy
  */
-public class AccountSearchServlet extends HttpServlet {
-    Map<String,String> sitemap;
+public class DeleteCartItemsServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,27 +30,15 @@ public class AccountSearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        sitemap = (Map<String,String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("search");
-        String searchValue = request.getParameter("search_value");
-        
+        String[] id = request.getParameterValues("chkItem");
+//        Map<String, value>
         try {
-            if(searchValue!=null && searchValue.trim().length() > 0) {
-                //1.call dao
-                AccountDAO dao = new AccountDAO();
-                dao.searchAccounts(searchValue);
-                //2.process result
-                List<AccountDTO> result = dao.getAccounts();
-                request.setAttribute("SEARCH_RESULT", result);
+            
+            for (String key : id) {
+                
             }
-        }catch(SQLException ex) {
-            log("AccountSearchServlet _ SQL _ " + ex.getMessage());
-        }catch(NamingException ex) {
-            log("AccountSearchServlet _ Naming _ " + ex.getMessage());
-        }finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        }finally{
+            
         }
     }
 

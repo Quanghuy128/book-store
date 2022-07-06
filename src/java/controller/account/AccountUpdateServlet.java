@@ -44,7 +44,7 @@ public class AccountUpdateServlet extends HttpServlet {
         String role = request.getParameter("role");
         String searchValue = request.getParameter("lastSearchValue");
         //url
-        String url = sitemap.get("searchAction") + "?search_value=" + searchValue;
+        String url = sitemap.get("SearchAction") + "?search_value=" + searchValue;
         try {
             AccountDAO dao = new AccountDAO();
             //encrypt password

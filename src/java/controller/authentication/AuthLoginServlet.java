@@ -40,7 +40,7 @@ public class AuthLoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         siteMap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
         
-        String url = siteMap.get("login_page");
+        String url = siteMap.get("login");
         String username = request.getParameter("login_username");
         String password = request.getParameter("login_password");
         boolean errorFound = false;
@@ -52,7 +52,7 @@ public class AuthLoginServlet extends HttpServlet {
             AccountDTO result = dao.getUser(username, password);
             //2.process
             if(result != null) {
-                url = siteMap.get("search_page");
+                url = siteMap.get("search");
                 
                 // cookie
                 Cookie cookie = new Cookie(username, password);

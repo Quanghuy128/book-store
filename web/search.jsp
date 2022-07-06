@@ -14,13 +14,13 @@
     </head>
     <body>
         <div>
-            <font color="red">Welcome</font> ${sessionScope.USER.fullname} ${sessionScope.TEST}
-            <form action="logoutAction">
+            <font color="red">Welcome</font> ${sessionScope.USER.fullname}
+            <form action="LogoutAction">
                 <input type="submit" value="Logout" />
             </form>
         </div>
 
-        <form action="searchAction">
+        <form action="SearchAction">
             <input type="text" name="search_value" value="${param.search_value}" />
             <input type="submit" value="Search"/>
         </form> <br/>
@@ -65,7 +65,7 @@
                             <font color="red">${success_delete_user} deleted successfully</font>
                         </c:if>
                     <c:forEach var="account" items="${result}" varStatus="counter">
-                        <form action="updateAccountAction">
+                        <form action="UpdateAccountAction">
                             <tr>
                                 <td>${counter.count}</td>
                                 <td>
@@ -86,7 +86,7 @@
                                 <td>${account.sex}</td>
                                 <td><input type="password" name="new_password" value="" /></td>
                                 <td>
-                                    <c:url var="urlRewriting" value="deleteAccountAction">
+                                    <c:url var="urlRewriting" value="DeleteAccountAction">
                                         <c:param name="username" value="${account.username}"/>
                                         <c:param name="lastSearchValue" value="${searchValue}"/>
                                     </c:url>

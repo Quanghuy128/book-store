@@ -3,17 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.account;
+package controller.cart;
 
-import dao.account.AccountDAO;
-import dao.account.AccountDTO;
+import cart.CartObject;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +18,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author huy
  */
-public class AccountSearchServlet extends HttpServlet {
-    Map<String,String> sitemap;
+public class AddCartItemsServlet extends HttpServlet {
+    private Map<String, String> siteMap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,27 +32,24 @@ public class AccountSearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String url = "StoreViewAction";
         
-        sitemap = (Map<String,String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("search");
-        String searchValue = request.getParameter("search_value");
-        
+        String productId = request.getParameter("productId");
+        String quantity = request.getParameter("quantity");
         try {
-            if(searchValue!=null && searchValue.trim().length() > 0) {
-                //1.call dao
-                AccountDAO dao = new AccountDAO();
-                dao.searchAccounts(searchValue);
-                //2.process result
-                List<AccountDTO> result = dao.getAccounts();
-                request.setAttribute("SEARCH_RESULT", result);
-            }
-        }catch(SQLException ex) {
-            log("AccountSearchServlet _ SQL _ " + ex.getMessage());
-        }catch(NamingException ex) {
-            log("AccountSearchServlet _ Naming _ " + ex.getMessage());
+            //1.Customer goes to cart place
+            HttpSession session = request.getSession();
+            //2.Customer takes cart
+            CartObject cart = (CartObject) session.getAttribute("CART");
+            if (cart == null) {
+                cart = new CartObject();
+            }//end if cart is not existed
+            //3.Customer drops item to cart
+            cart.addBookToCart(productId, Integer.parseInt(quantity));
+            //4.Customer continue shopping
+            session.setAttribute("CART", cart);
         }finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
         }
     }
 

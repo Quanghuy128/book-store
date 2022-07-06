@@ -36,7 +36,7 @@ public class AuthStartupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "login_page";  
+        String url = "login";  
         try {
             Cookie[] cookies = request.getCookies();
             if(cookies!=null) {
@@ -56,9 +56,9 @@ public class AuthStartupServlet extends HttpServlet {
 
                 if(result!=null) {
                     if(result.getRole().equalsIgnoreCase("Admin")){
-                        url = "search_page";
+                        url = "search";
                     }else{
-                        url = "shopping_page";
+                        url = "shopping";
                     }
                     request.getSession(true).setAttribute("USER", result);
                 }
