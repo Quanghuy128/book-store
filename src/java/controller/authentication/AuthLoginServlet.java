@@ -5,6 +5,7 @@
  */
 package controller.authentication;
 
+import cart.CartObject;
 import dao.account.AccountDAO;
 import dao.account.AccountDTO;
 import dao.account.EncryptedPassword;
@@ -19,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *

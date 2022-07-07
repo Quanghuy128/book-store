@@ -53,7 +53,7 @@ public class DeleteCartItemsServlet extends HttpServlet {
                         if (items != null) {
                             //3.Create order
                                 for (String key : selectedItems) {
-                                    items.remove(key);
+                                    cart.removeBookFromCart(key);
                                 }
                                 session.setAttribute("CART", cart);
                         }//end if items is not null

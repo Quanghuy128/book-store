@@ -17,4 +17,3 @@ search=search.jsp
 shopping=shopping.jsp
 cart=cart.jsp
 checkout=checkout.jsp
-error=error.html
