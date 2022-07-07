@@ -22,6 +22,15 @@
                 </form>
             </div>
         </c:if>
+        <c:if test="${empty sessionScope.USER}">
+            <div>
+                <form action="login">
+                    <input type="submit" value="Login" />
+                </form>
+                <br/>
+            </div>
+        </c:if>
+        
         <c:set var="listItems" value="${requestScope.ITEMS}"/>
         <c:if test="${not empty listItems}">
             <table border="1">

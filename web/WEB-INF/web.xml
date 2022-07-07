@@ -46,7 +46,7 @@
     </servlet>
     <servlet>
         <servlet-name>AuthLogoutServlet</servlet-name>
-        <servlet-class>controller.account.AuthLogoutServlet</servlet-class>
+        <servlet-class>controller.authentication.AuthLogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>StoreViewServlet</servlet-name>
@@ -70,7 +70,7 @@
     </servlet>
     <servlet>
         <servlet-name>CheckoutServlet</servlet-name>
-        <servlet-class>controller.checkout.CheckoutServlet</servlet-class>
+        <servlet-class>controller.checkout.CheckOutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthStartupServlet</servlet-name>

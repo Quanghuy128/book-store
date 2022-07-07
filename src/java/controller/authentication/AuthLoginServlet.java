@@ -52,7 +52,11 @@ public class AuthLoginServlet extends HttpServlet {
             AccountDTO result = dao.getUser(username, password);
             //2.process
             if(result != null) {
-                url = siteMap.get("search");
+                if(result.getRole().equalsIgnoreCase("Admin")){
+                    url = siteMap.get("search");
+                }else {
+                    url = siteMap.get("StoreViewAction");
+                }
                 
                 // cookie
                 Cookie cookie = new Cookie(username, password);
