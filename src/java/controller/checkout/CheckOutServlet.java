@@ -9,6 +9,7 @@ import cart.CartObject;
 import checkout.CheckoutError;
 import checkout.order_detail.OrderedDetailDAO;
 import checkout.ordered.OrderedDAO;
+import dao.account.AccountDTO;
 import dao.product.ProductDAO;
 import dao.product.ProductDTO;
 import java.io.IOException;
@@ -55,18 +56,26 @@ public class CheckOutServlet extends HttpServlet {
         boolean isError = false;
 
         try {
+            HttpSession session = request.getSession(false);
+            AccountDTO user = (AccountDTO) session.getAttribute("USER"); 
             //validate
-            if (cusName.trim().length() <= 0) {
-                errors.setCustNameIsNullError("Name cannot be blanked!");
-                isError = true;
-            }//end if cusName is not null
-            if (cusAddress.trim().length() <= 0) {
-                errors.setAddressIsNullError("Address cannot be blanked!");
-                isError = true;
-            }//end if cusAddress is not null
-            if (phone_no.trim().length() <= 0) {
-                errors.setPhoneNumberIsNullError("Phone Number cannot be blanked!");
-                isError = true;
+            if(user!=null) {
+                cusName = user.getFullname();
+                cusAddress = user.getAddress();
+                phone_no = user.getPhone_no();
+            }else {
+                if (cusName.trim().length() <= 0) {
+                    errors.setCustNameIsNullError("Name cannot be blanked!");
+                    isError = true;
+                }//end if cusName is not null
+                if (cusAddress.trim().length() <= 0) {
+                    errors.setAddressIsNullError("Address cannot be blanked!");
+                    isError = true;
+                }//end if cusAddress is not null
+                if (phone_no.trim().length() <= 0) {
+                    errors.setPhoneNumberIsNullError("Phone Number cannot be blanked!");
+                    isError = true;
+                }
             }
             
             //check if error existed
@@ -74,7 +83,7 @@ public class CheckOutServlet extends HttpServlet {
                 request.setAttribute("ERROR", errors);
             } else {
                 // 1.Goes to cart place
-                HttpSession session = request.getSession(false);
+                
                 if (session != null) {
                     //2.Take customer's cart
                     CartObject cart = (CartObject) session.getAttribute("CART");

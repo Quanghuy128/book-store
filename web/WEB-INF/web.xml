@@ -137,6 +137,14 @@
             30
         </session-timeout>
     </session-config>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error_handling/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>429</error-code>
+        <location>/error_handling/429.html</location>
+    </error-page>
     <resource-ref>
         <res-ref-name>BookStoreDB_Connection</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
