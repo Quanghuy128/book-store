@@ -22,6 +22,14 @@
                 </form>
             </div>
         </c:if>
+        <c:if test="${empty sessionScope.USER}">
+            <div>
+                <form action="login">
+                    <input type="submit" value="Login" />
+                </form>
+                <br/>
+            </div>
+        </c:if>
                 
         <c:set var="checkout_items" value="${requestScope.ITEMS_IN_CHECKOUT}"/>
         <c:if test="${not empty checkout_items}">
@@ -93,6 +101,9 @@
         </c:if>
         <c:if test="${empty checkout_items}">
             <h1 style="color: red">No Item In Cart!!!</h1>
+            <c:if test="${not empty requestScope.CHECKOUT_SUCCESSFULLY}">
+                <h3 style="color: green">${requestScope.CHECKOUT_SUCCESSFULLY}</h3>
+            </c:if>
             <a href="StoreViewAction">Back To Store</a>
         </c:if>
     </body>

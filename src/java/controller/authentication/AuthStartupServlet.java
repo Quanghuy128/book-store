@@ -58,7 +58,7 @@ public class AuthStartupServlet extends HttpServlet {
                     if(result.getRole().equalsIgnoreCase("Admin")){
                         url = "search";
                     }else{
-                        url = "shopping";
+                        url = "StoreViewAction";
                     }
                     request.getSession(true).setAttribute("USER", result);
                 }

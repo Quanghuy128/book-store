@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author huy
  */
-public class CheckoutServlet extends HttpServlet {
+public class CheckOutServlet extends HttpServlet {
     Map<String, String> sitemap;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +44,7 @@ public class CheckoutServlet extends HttpServlet {
         
         //get site map
         sitemap = (Map<String, String>) request.getServletContext().getAttribute("SITE_MAP");
-        String url = sitemap.get("checkout");
+        String url = sitemap.get("CheckoutViewAction");
         //get request parameters
         String cusName = request.getParameter("txtCusName");
         String cusAddress = request.getParameter("txtCusAddress");
@@ -57,15 +57,15 @@ public class CheckoutServlet extends HttpServlet {
         try {
             //validate
             if (cusName.trim().length() <= 0) {
-                errors.setCustNameIsNullError("Name cannot be blank!");
+                errors.setCustNameIsNullError("Name cannot be blanked!");
                 isError = true;
             }//end if cusName is not null
             if (cusAddress.trim().length() <= 0) {
-                errors.setAddressIsNullError("Address cannot be blank!");
+                errors.setAddressIsNullError("Address cannot be blanked!");
                 isError = true;
             }//end if cusAddress is not null
             if (phone_no.trim().length() <= 0) {
-                errors.setAddressIsNullError("Phone Number cannot be blank!");
+                errors.setPhoneNumberIsNullError("Phone Number cannot be blanked!");
                 isError = true;
             }
             
@@ -99,8 +99,9 @@ public class CheckoutServlet extends HttpServlet {
                                                         key,
                                                         orderId);
                             }//end for items.keySet
+                            session.removeAttribute("CART");
+                            request.setAttribute("CHECKOUT_SUCCESSFULLY", "checked out successfully");
                         }//end if items is not null
-                        session.removeAttribute("CART");
                     }//end if cart is not null
                 }//end if session is not null
             }//end else isError == false
